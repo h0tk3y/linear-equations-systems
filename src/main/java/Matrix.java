@@ -213,7 +213,7 @@ public class Matrix {
         return result;
     }
 
-    public static final double REVERSE_DETERMINANT_EPSILON = 1e-8;
+    public static final double REVERSE_DETERMINANT_EPSILON = 1e-10;
 
     /**
      * Calculates the reversed matrix A^-1, so that A*A^-1 = E.

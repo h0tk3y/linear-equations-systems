@@ -28,4 +28,16 @@ public class MatrixTest {
         Assert.assertNull(m3.reversed());
     }
 
+    @Test
+    public void testConditionality() {
+        Matrix m1 = new Matrix(new double[]{1, 0.01, 0}, new double[]{0.01, 1, 0.01}, new double[]{0, 0.01, 1});
+        Assert.assertTrue(m1.conditionality() < 2);
+
+        Matrix m2 = new Matrix(new double[]{1./2, 1./3, 1./4, 1./5}
+                             , new double[]{1./3, 1./4, 1./5, 1./6}
+                             , new double[]{1./4, 1./5, 1./6, 1./7}
+                             , new double[]{1./5, 1./6, 1./7, 1./8});
+        Assert.assertTrue(m2.conditionality() > 9000); //IT'S OVER NINE THOUSAND!!!
+    }
+
 }

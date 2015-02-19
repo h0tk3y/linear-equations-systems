@@ -11,7 +11,7 @@ public class Vector implements Cloneable {
         return components.clone();
     }
 
-    public Vector(double[] components) {
+    public Vector(double... components) {
         if (components == null)
             throw new IllegalArgumentException("Vector components cannot be null.");
         this.components = components;
