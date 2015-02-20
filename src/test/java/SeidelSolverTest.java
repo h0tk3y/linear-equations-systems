@@ -1,13 +1,13 @@
 import org.junit.Assert;
 import org.junit.Test;
 
-public class JacobiSolverTest {
+public class SeidelSolverTest {
 
     public static final double EPSILON = 1e-8;
 
     @Test
     public void testGoodConditionality() throws Exception {
-        JacobiSolver solver = new JacobiSolver(0.1, 100000);
+        SeidelSolver solver = new SeidelSolver(100000);
 
         Matrix a1 = new Matrix(new double[] {5, 2, 1},
                                new double[] {2, 5, 2},
@@ -37,15 +37,20 @@ public class JacobiSolverTest {
     }
 
     @Test
-    public void testBadConditionality() throws Exception {
-        JacobiSolver solver = new JacobiSolver(0.1, 100000);
+    public void testAverageConditionality() throws Exception {
+        SeidelSolver solver = new SeidelSolver(100000);
 
         Matrix a1 = new Matrix(new double[] {17, 15, 15},
-                new double[] {10, 12, 11},
-                new double[] {15, 10, 13});
+                               new double[] {10, 12, 11},
+                               new double[] {15, 10, 13});
         Vector b1 = new Vector(10, 15, 20);
         LinearEquationsSystem system1 = new LinearEquationsSystem(a1, b1);
         Solution solution1 = solver.solve(system1, EPSILON);
-        Assert.assertNull(solution1);
+        Assert.assertNotNull(solution1);
+        Vector answer1 = new Vector(-515 / 107d,
+                                    -450 / 107d,
+                                    1105 / 107d);
+        Assert.assertTrue(solution1.vector.equals(answer1, EPSILON * 100));
     }
+
 }

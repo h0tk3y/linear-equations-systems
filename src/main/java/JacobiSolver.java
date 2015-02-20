@@ -15,10 +15,9 @@ public class JacobiSolver implements Solver {
 
     @Override
     public Solution solve(LinearEquationsSystem s, double epsilon) {
-        Matrix a = s.a;
-        Matrix d = Matrix.byDiagonal(a.getDiagonal());
+        Matrix d = Matrix.byDiagonal(s.a.getDiagonal());
         Matrix dReversed = d.reversed();
-        Matrix b = Matrix.unit(a.getHeight()).subtract(dReversed.multiply(a));
+        Matrix b = Matrix.unit(s.a.getHeight()).subtract(dReversed.multiply(s.a));
         Vector g = dReversed.multiply(s.b);
         Vector x = Vector.zero(s.b.getDimensions());
         Vector nextX = x;
