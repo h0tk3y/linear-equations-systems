@@ -77,10 +77,19 @@ public class Vector implements Cloneable {
         if (getDimensions() != that.getDimensions())
             return false;
         for (int i = 0; i < getDimensions(); ++i) {
-            if (Math.abs(get(i) - that.get(i)) > epsilon)
+            if (!(Math.abs(get(i) - that.get(i)) < epsilon))
                 return false;
         }
         return true;
+    }
+
+    public boolean hasNaN() {
+        for (int i = 0; i < getDimensions(); ++i) {
+            if (get(i) == Double.NaN) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

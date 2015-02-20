@@ -58,7 +58,7 @@ public class Matrix {
         }
         for (int i = 0; i < getHeight(); ++i) {
             for (int j = 0; j < getWidth(); ++j) {
-                if (Math.abs(get(i, j) - that.get(i, j)) > epsilon)
+                if (!(Math.abs(get(i, j) - that.get(i, j)) < epsilon))
                     return false;
             }
         }
@@ -192,6 +192,19 @@ public class Matrix {
     }
 
     /**
+     * Get an array of the matrix' diagonal items.
+     *
+     * @return a_i = A_i_i {1..n}
+     */
+    public double[] getDiagonal() {
+        double[] result = new double[getHeight()];
+        for (int i = 0; i < getHeight(); ++i) {
+            result[i] = get(i, i);
+        }
+        return result;
+    }
+
+    /**
      * Calculates square matrix determinant.
      *
      * @return det(this)
@@ -302,5 +315,14 @@ public class Matrix {
             result.append("\n");
         }
         return result.toString();
+    }
+
+    public static Matrix byDiagonal(double[] trace) {
+        double[][] components = new double[trace.length][];
+        for (int i = 0; i < components.length; ++i) {
+            components[i] = new double[trace.length];
+            components[i][i] = trace[i];
+        }
+        return new Matrix(components);
     }
 }
