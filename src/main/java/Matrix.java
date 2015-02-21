@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
+
 /**
  * Represents a rectangular matrix of doubles
  * <p/>
@@ -322,6 +325,31 @@ public class Matrix {
         for (int i = 0; i < components.length; ++i) {
             components[i] = new double[trace.length];
             components[i][i] = trace[i];
+        }
+        return new Matrix(components);
+    }
+
+    public static Matrix parse(String s) {
+        ArrayList<Integer> splitPoints = new ArrayList<>();
+        int bracesBalance = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            if (s.charAt(i) == '{') {
+                ++bracesBalance;
+            } else if (s.charAt(i) == '}') {
+                --bracesBalance;
+            } else if (s.charAt(i) == ',' && bracesBalance == 0) {
+                splitPoints.add(i);
+            }
+        }
+        splitPoints.add(s.length());
+        double[][] components = new double[splitPoints.size()][];
+        for (int i = 0; i < splitPoints.size(); ++i) {
+            String[] line = s.substring(i == 0 ? 0 : splitPoints.get(i - 1) + 1, splitPoints.get(i) - 1).trim()
+                    .replaceAll("[\\}\\{,]", " ").split("\\s+");
+            components[i] = new double[line.length - 1];
+            for (int j = 1; j < line.length; ++j) {
+                components[i][j-1] = Double.parseDouble(line[j]);
+            }
         }
         return new Matrix(components);
     }

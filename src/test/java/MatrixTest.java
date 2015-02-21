@@ -40,4 +40,9 @@ public class MatrixTest {
         Assert.assertTrue(m2.conditionality() > 9000); //IT'S OVER NINE THOUSAND!!!
     }
 
+    @Test
+    public void testParse() throws Exception {
+        Matrix parsed = Matrix.parse("{1, 0, 0}, {0, 1, 0}, {0, 0, 1}");
+        Assert.assertTrue(parsed.equals(Matrix.unit(3), 0.1));
+    }
 }

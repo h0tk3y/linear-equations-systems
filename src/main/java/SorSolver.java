@@ -7,18 +7,21 @@ public class SorSolver extends SeidelSolver {
         super(iterationsLimit);
     }
 
+    int iterations = 0;
+
     @Override
     public Solution solve(LinearEquationsSystem s, double epsilon) {
         while (currentRelaxation > 1e-5) {
             Solution solution = super.solve(s, epsilon);
             if (solution != null)
-                return solution;
+                return new Solution(iterations + solution.iterations, solution.vector);
+            iterations += iterationsLimit;
             currentRelaxation /= 1.25;
         }
         return null;
     }
 
-    double currentRelaxation = 2.0;
+    double currentRelaxation = 1.8;
 
     @Override
     protected Vector seidelProduct(Matrix a, Vector x, Vector b) {
