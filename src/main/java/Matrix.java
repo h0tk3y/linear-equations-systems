@@ -1,3 +1,5 @@
+import com.sun.org.apache.xalan.internal.xsltc.dom.MatchingIterator;
+
 import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 
@@ -353,4 +355,91 @@ public class Matrix {
         }
         return new Matrix(components);
     }
+
+    /**
+     * returns a Vector-representation of specified row
+     * for gauss
+     * @param i
+     * @return
+     */
+    public Vector getRow(int i)
+    {
+        if(i < 0 || i >= components.length)
+            throw new IllegalArgumentException("invalid row number\n");
+        return new Vector(components[i].clone());
+    }
+
+    /**
+     * for gauss
+     * @param i
+     * @return
+     */
+    public Matrix excludeVariableForward(int i)
+    {
+        if(i < 0 || i >= components[0].length)
+            throw new IllegalArgumentException("invalid row number\n");
+
+        double[][] newComponents = getComponents();
+
+        Vector fixedRow = getRow(i);
+        Vector addition;
+        Vector temp;
+
+        for(int j=i+1; j<components.length; ++j)
+        {
+            addition = fixedRow.multiply(-get(j,i)/get(i,i));
+            temp = getRow(j).add(addition);
+            newComponents[j] = temp.getComponents();
+        }
+
+        return new Matrix(newComponents);
+    }
+
+    /**
+     * for gauss
+     * @param i
+     * @return
+     */
+    public Matrix excludeVariableBackward(int i)
+    {
+        if(i < 0 || i >= components[0].length)
+            throw new IllegalArgumentException("invalid row number\n");
+
+        double[][] newComponents = getComponents();
+
+        double[] last = getRow(i).getComponents();
+
+        Vector fixed = new Vector(last);
+        fixed = fixed.multiply(1/fixed.get(i));
+
+        Vector addition;
+        Vector temp;
+
+        for(int j=i-1; j>=0; --j)
+        {
+            addition = fixed.multiply(-get(j,i));
+            temp = getRow(j).add(addition);
+            newComponents[j] = temp.getComponents();
+        }
+
+        return new Matrix(newComponents);
+    }
+
+    /**
+     * Creates extended matrix (A|b) from source matrix A and vector b
+     * @param a matrix
+     * @param b vector
+     * @return extended matrix
+     */
+    public static Matrix getExtended(Matrix a, Vector b)
+    {
+        double[][] components = new double[a.getHeight()][a.getWidth()+1];
+        for (int i = 0; i < a.getHeight(); ++i) {
+            for(int j=0; j< a.getWidth(); ++j)
+                components[i][j] = a.get(i, j);
+            components[i][components[i].length-1] = b.get(i);
+        }
+        return new Matrix(components);
+    }
 }
+
