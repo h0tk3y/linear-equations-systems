@@ -22,11 +22,11 @@ public class SeidelSolver implements Solver {
             iterations++;
             if (nextX.hasNaN() || iterations > iterationsLimit)
                 return null;
-        } while (!x.equals(nextX, epsilon));
+        } while (s.a.multiply(nextX).subtract(s.b).norm() > epsilon);
         return new Solution(iterations, nextX);
     }
 
-    private Vector seidelProduct(Matrix a, Vector x, Vector b) {
+    protected Vector seidelProduct(Matrix a, Vector x, Vector b) {
         double[] components = new double[a.getHeight()];
         for (int i = 0; i < components.length; ++i) {
             double component = 0;
