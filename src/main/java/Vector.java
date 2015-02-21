@@ -67,6 +67,22 @@ public class Vector implements Cloneable {
     }
 
     /**
+     * Calculates scalar product with another vector.
+     *
+     * @param v Another vector.
+     * @return A number -- (this, v), which is scalar product.
+     */
+    public double product(Vector v) {
+        if (getDimensions() != v.getDimensions())
+            throw new IllegalArgumentException();
+        double result = 0;
+        for (int i = 0; i < getDimensions(); ++i) {
+            result += get(i) * v.get(i);
+        }
+        return result;
+    }
+
+    /**
      * Checks if all the components of this and another vector differ not more than by epsilon.
      *
      * @param that A vector to compare with;

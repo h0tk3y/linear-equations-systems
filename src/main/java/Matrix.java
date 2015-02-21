@@ -1,7 +1,4 @@
-import com.sun.org.apache.xalan.internal.xsltc.dom.MatchingIterator;
-
 import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
 
 /**
  * Represents a rectangular matrix of doubles
@@ -231,7 +228,7 @@ public class Matrix {
         return result;
     }
 
-    public static final double REVERSE_DETERMINANT_EPSILON = 1e-10;
+    public static final double REVERSE_DETERMINANT_EPSILON = 1e-18;
 
     /**
      * Calculates the reversed matrix A^-1, so that A*A^-1 = E.
@@ -252,6 +249,22 @@ public class Matrix {
             }
         }
         return new Matrix(newComponents);
+    }
+
+    /**
+     * Makes a transponed matrix.
+     *
+     * @return [a_i_j] = [this_j_i]
+     */
+    public Matrix transponed() {
+        double[][] components = new double[getWidth()][];
+        for (int i = 0; i < components.length; ++i) {
+            components[i] = new double[getHeight()];
+            for (int j = 0; j < components[i].length; ++j) {
+                components[i][j] = get(j, i);
+            }
+        }
+        return new Matrix(components);
     }
 
     /**

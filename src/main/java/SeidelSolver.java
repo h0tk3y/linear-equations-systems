@@ -22,7 +22,11 @@ public class SeidelSolver implements Solver {
             iterations++;
             if (nextX.hasNaN() || iterations > iterationsLimit)
                 return null;
-        } while (s.a.multiply(nextX).subtract(s.b).norm() > epsilon);
+        } while (s.a.multiply(nextX).subtract(s.b).norm() > epsilon * 0.1);
+        if (!(s.a.multiply(nextX).subtract(s.b).norm() <= epsilon * 0.1)
+                && !(Vector.distance(x, nextX) <= epsilon * 0.1)) {
+            return null;
+        }
         return new Solution(iterations, nextX);
     }
 
